@@ -79,32 +79,32 @@ const GetStartedPage = () => {
       {/* Navigation */}
       <nav className="border-b bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center">
               <button 
                 onClick={() => router.push('/')}
-                className="text-2xl font-bold text-blue-600 hover:text-blue-700"
+                className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
               >
                 VoteCrypto
               </button>
-              <span className="ml-2 text-sm text-gray-500">.app</span>
+              <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4">
+      <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-8">
         <div className="max-w-md mx-auto text-center">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">🗳️</span>
+          <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-3xl sm:text-4xl">🗳️</span>
             </div>
             
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
               Get Started with VoteCrypto
             </h1>
             
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
               Mint your first NFT to show you&apos;re interested in voting and start your civic engagement journey!
             </p>
 
@@ -122,7 +122,7 @@ const GetStartedPage = () => {
                 
                 <button
                   onClick={handleConnectWallet}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors min-h-[48px] text-base"
                 >
                   Connect Wallet to Continue
                 </button>

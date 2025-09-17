@@ -46,7 +46,7 @@ const WalletConnection = () => {
         theme="light"
         connectButton={{
           label: "Connect Wallet",
-          className: "!bg-blue-600 !text-white hover:!bg-blue-700 !border-0 !rounded-lg !px-6 !py-2 !font-semibold !transition-colors"
+          className: "!bg-blue-600 !text-white hover:!bg-blue-700 !border-0 !rounded-lg !px-4 !py-2 sm:!px-6 !font-semibold !transition-colors !text-sm sm:!text-base !min-h-[44px]"
         }}
       />
     </div>

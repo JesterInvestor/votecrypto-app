@@ -67,31 +67,31 @@ const VoterToolCard = ({ tool, isSelected, onSelect, userState, userZip }: Voter
   return (
     <div 
       className={`
-        border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer
+        border-2 rounded-lg p-4 sm:p-6 transition-all duration-200 cursor-pointer
         ${colorClasses[tool.color as keyof typeof colorClasses]}
         ${isSelected ? 'ring-2 ring-offset-2 ring-blue-500' : ''}
       `}
       onClick={() => onSelect(tool.id)}
     >
-      <div className="flex items-center mb-4">
-        <span className="text-3xl mr-3">{tool.icon}</span>
-        <h3 className="text-lg font-semibold text-gray-900">{tool.title}</h3>
+      <div className="flex items-center mb-3 sm:mb-4">
+        <span className="text-2xl sm:text-3xl mr-3">{tool.icon}</span>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900">{tool.title}</h3>
       </div>
       
-      <p className="text-gray-600 mb-4 text-sm">{tool.description}</p>
+      <p className="text-gray-600 mb-3 sm:mb-4 text-sm leading-relaxed">{tool.description}</p>
       
-      <div className="space-y-2 mb-6">
+      <div className="space-y-2 mb-4 sm:mb-6">
         {tool.features.map((feature, index) => (
-          <div key={index} className="flex items-center text-sm text-gray-600">
-            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2"></span>
-            {feature}
+          <div key={index} className="flex items-start text-xs sm:text-sm text-gray-600">
+            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2 mt-1.5 flex-shrink-0"></span>
+            <span className="leading-relaxed">{feature}</span>
           </div>
         ))}
       </div>
       
       <button 
         className={`
-          w-full text-white px-4 py-2 rounded-md font-medium text-sm transition-colors
+          w-full text-white px-4 py-3 rounded-md font-medium text-sm transition-colors min-h-[44px]
           ${buttonColorClasses[tool.color as keyof typeof buttonColorClasses]}
         `}
         onClick={(e) => {

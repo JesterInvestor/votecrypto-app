@@ -31,15 +31,15 @@ const RewardsPage = () => {
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
         <nav className="border-b bg-white/80 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex justify-between items-center h-14 sm:h-16">
               <div className="flex items-center">
                 <button 
                   onClick={() => router.push('/')}
-                  className="text-2xl font-bold text-blue-600 hover:text-blue-700"
+                  className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
                 >
                   VoteCrypto
                 </button>
-                <span className="ml-2 text-sm text-gray-500">.app</span>
+                <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
               </div>
             </div>
           </div>

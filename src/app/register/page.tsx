@@ -38,9 +38,9 @@ const RegisterPage = () => {
       // Submit voter registration
       const result = await registerToVote(formData);
       
-      if (result.success) {
+      if (result.redirectUrl) {
         setRegistrationSuccess(true);
-        setConfirmationId(result.confirmationId || '');
+        setConfirmationId(result.message || '');
 
         // Award the voter registration NFT
         try {
@@ -117,35 +117,35 @@ const RegisterPage = () => {
       {/* Navigation */}
       <nav className="border-b bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center">
               <button 
                 onClick={() => router.push('/')}
-                className="text-2xl font-bold text-blue-600 hover:text-blue-700"
+                className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
               >
                 VoteCrypto
               </button>
-              <span className="ml-2 text-sm text-gray-500">.app</span>
+              <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-2xl mx-auto py-12 px-4">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">📝</span>
+      <main className="max-w-2xl mx-auto py-6 sm:py-12 px-4">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl sm:text-3xl">📝</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Register to Vote
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm sm:text-base">
               Complete your voter registration and earn rewards for civic engagement!
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
               <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
                 Home Address *
@@ -162,7 +162,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
                   City *
@@ -270,7 +270,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] text-base"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center">

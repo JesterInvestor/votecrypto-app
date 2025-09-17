@@ -1,5 +1,7 @@
 'use client';
 
+import { getVoteOrgToolUrl } from '@/lib/api/voteOrg';
+
 interface VoterTool {
   id: string;
   title: string;
@@ -13,9 +15,11 @@ interface VoterToolCardProps {
   tool: VoterTool;
   isSelected: boolean;
   onSelect: (id: string) => void;
+  userState?: string;
+  userZip?: string;
 }
 
-const VoterToolCard = ({ tool, isSelected, onSelect }: VoterToolCardProps) => {
+const VoterToolCard = ({ tool, isSelected, onSelect, userState, userZip }: VoterToolCardProps) => {
   const colorClasses = {
     blue: 'border-blue-200 bg-blue-50 hover:border-blue-300',
     green: 'border-green-200 bg-green-50 hover:border-green-300',
@@ -32,6 +36,32 @@ const VoterToolCard = ({ tool, isSelected, onSelect }: VoterToolCardProps) => {
     orange: 'bg-orange-600 hover:bg-orange-700',
     indigo: 'bg-indigo-600 hover:bg-indigo-700',
     pink: 'bg-pink-600 hover:bg-pink-700',
+  };
+
+  const handleToolAccess = () => {
+    // Map tool IDs to Vote.org tool names
+    const toolMap = {
+      'register': 'register',
+      'absentee': 'absentee',
+      'polling': 'polling',
+      'early': 'early',
+      'id': 'id',
+      'ballot': 'ballot'
+    };
+
+    const voteOrgTool = toolMap[tool.id as keyof typeof toolMap];
+    if (voteOrgTool) {
+      const additionalParams: Record<string, string> = {};
+      if (userZip) {
+        additionalParams.zip = userZip;
+      }
+
+      const url = getVoteOrgToolUrl(voteOrgTool, userState, additionalParams);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Fallback for unknown tools
+      alert(`${tool.title} integration is being developed. Please visit Vote.org directly for now.`);
+    }
   };
 
   return (
@@ -66,8 +96,7 @@ const VoterToolCard = ({ tool, isSelected, onSelect }: VoterToolCardProps) => {
         `}
         onClick={(e) => {
           e.stopPropagation();
-          // TODO: Integrate with Vote.org API
-          alert(`${tool.title} feature coming soon! This will integrate with Vote.org API.`);
+          handleToolAccess();
         }}
       >
         Access Tool

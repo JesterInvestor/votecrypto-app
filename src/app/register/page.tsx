@@ -114,23 +114,6 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center">
-              <button 
-                onClick={() => router.push('/')}
-                className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
-              >
-                VoteCrypto
-              </button>
-              <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-2xl mx-auto py-6 sm:py-12 px-4">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
           <div className="text-center mb-6 sm:mb-8">

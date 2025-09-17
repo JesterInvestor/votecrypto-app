@@ -1,23 +1,9 @@
-import WalletConnection from '@/components/WalletConnection';
 import VoterTools from '@/components/VoterTools';
 import Hero from '@/components/Hero';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center">
-              <h1 className="text-xl sm:text-2xl font-bold text-blue-600">VoteCrypto</h1>
-              <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
-            </div>
-            <WalletConnection />
-          </div>
-        </div>
-      </nav>
-
       <main>
         <Hero />
         <VoterTools />

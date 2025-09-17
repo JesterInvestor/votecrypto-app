@@ -29,22 +29,6 @@ const RewardsPage = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-        <nav className="border-b bg-white/80 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-14 sm:h-16">
-              <div className="flex items-center">
-                <button 
-                  onClick={() => router.push('/')}
-                  className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
-                >
-                  VoteCrypto
-                </button>
-                <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
-              </div>
-            </div>
-          </div>
-        </nav>
-        
         <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -57,23 +41,6 @@ const RewardsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <button 
-                onClick={() => router.push('/')}
-                className="text-2xl font-bold text-blue-600 hover:text-blue-700"
-              >
-                VoteCrypto
-              </button>
-              <span className="ml-2 text-sm text-gray-500">.app</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-6xl mx-auto py-12 px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Your Rewards</h1>

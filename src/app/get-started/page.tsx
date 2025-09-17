@@ -76,23 +76,6 @@ const GetStartedPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
-            <div className="flex items-center">
-              <button 
-                onClick={() => router.push('/')}
-                className="text-xl sm:text-2xl font-bold text-blue-600 hover:text-blue-700"
-              >
-                VoteCrypto
-              </button>
-              <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-8">
         <div className="max-w-md mx-auto text-center">
           <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">

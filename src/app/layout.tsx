@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "VoteCrypto - Web3 Voting Platform",
@@ -21,7 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ThirdwebProvider>
-          {children}
+          <Navbar />
+          <main className="min-h-screen">
+            {children}
+          </main>
         </ThirdwebProvider>
       </body>
     </html>

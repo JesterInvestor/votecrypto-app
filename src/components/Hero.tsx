@@ -9,6 +9,10 @@ const Hero = () => {
     router.push('/get-started');
   };
 
+  const handleLearnMore = () => {
+    router.push('/learn-more');
+  };
+
   return (
     <section className="px-4 py-16 sm:py-20 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center">
@@ -29,7 +33,7 @@ const Hero = () => {
             >
               Get Started
             </button>
-            <button className="border border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors min-h-[48px] text-base">
+            <button onClick={handleLearnMore} className="border border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors min-h-[48px] text-base">
               Learn More
             </button>
           </div>

@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { mintRewardNFT } from '@/lib/rewards';
+// import { mintRewardNFT } from '@/lib/rewards';
 import { ConnectButton, useActiveAccount } from 'thirdweb/react';
 import { client } from '@/lib/client';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { base } from 'thirdweb/chains';
+import { getContract } from 'thirdweb';
+import { claimTo } from 'thirdweb/extensions/erc1155';
 
 const GetStartedPage = () => {
   const account = useActiveAccount();
@@ -48,18 +50,26 @@ const GetStartedPage = () => {
     createWallet('io.zerion.wallet'),
   ];
 
+  const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS || '0xb26C41D72fe12cDdfA8547C85F4Fdf486FFB9a8b') as `0x${string}`;
+  const TOKEN_ID = BigInt(0); // ERC-1155 token id 0
+
   const handleMintNFT = async () => {
-    if (!isWalletConnected) return;
+    if (!isWalletConnected || !account?.address) return;
 
     setIsMinting(true);
     try {
-      // Mint the "I'm interested in voting!" NFT
-      const result = await mintRewardNFT(mockWalletAddress, 'interested_in_voting');
-      
-      if (result.success) {
-        setMintSuccess(true);
-        setTransactionHash(result.transactionHash || '');
-      }
+      const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
+      const tx = await claimTo({
+        contract,
+        to: account.address,
+        tokenId: TOKEN_ID,
+        quantity: BigInt(1),
+      });
+      // tx may contain transactionHash depending on SDK version
+      // Safely handle both object or string
+      const hash = (tx as any)?.transactionHash || (typeof tx === 'string' ? tx : '');
+      setMintSuccess(true);
+      setTransactionHash(hash);
     } catch (error) {
       console.error('Minting failed:', error);
     } finally {
@@ -90,7 +100,11 @@ const GetStartedPage = () => {
           </div>
           {transactionHash && (
             <p className="text-xs text-gray-500 mb-6 break-all">
-              Transaction: {transactionHash.substring(0, 20)}...
+              {transactionHash ? (
+                <>Transaction: <a className="text-blue-600 underline" href={`https://basescan.org/tx/${transactionHash}`} target="_blank" rel="noreferrer">{transactionHash.substring(0, 20)}...</a></>
+              ) : (
+                'Transaction submitted'
+              )}
             </p>
           )}
           <button

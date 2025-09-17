@@ -3,20 +3,50 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { mintRewardNFT } from '@/lib/rewards';
+import { ConnectButton, useActiveAccount } from 'thirdweb/react';
+import { client } from '@/lib/client';
+import { inAppWallet, createWallet } from 'thirdweb/wallets';
+import { base } from 'thirdweb/chains';
 
 const GetStartedPage = () => {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const account = useActiveAccount();
+  const isWalletConnected = !!account;
   const [isMinting, setIsMinting] = useState(false);
   const [mintSuccess, setMintSuccess] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
   const router = useRouter();
 
-  const mockWalletAddress = "0x1234567890123456789012345678901234567890"; // Mock wallet for demo
+  const mockWalletAddress = account?.address || "0x1234567890123456789012345678901234567890"; // Use real address when connected
 
-  const handleConnectWallet = async () => {
-    // Simulate wallet connection
-    setIsWalletConnected(true);
-  };
+  const wallets = [
+    inAppWallet({
+      auth: {
+        options: [
+          'google',
+          'discord',
+          'telegram',
+          'farcaster',
+          'email',
+          'x',
+          'passkey',
+          'phone',
+          'github',
+          'twitch',
+          'tiktok',
+          'coinbase',
+          'steam',
+          'apple',
+          'facebook',
+          'guest',
+        ],
+      },
+    }),
+    createWallet('io.metamask'),
+    createWallet('com.coinbase.wallet'),
+    createWallet('me.rainbow'),
+    createWallet('io.rabby'),
+    createWallet('io.zerion.wallet'),
+  ];
 
   const handleMintNFT = async () => {
     if (!isWalletConnected) return;
@@ -102,13 +132,19 @@ const GetStartedPage = () => {
                     &quot;I&apos;m interested in voting!&quot; NFT - Your first step towards earning crypto rewards for civic engagement.
                   </p>
                 </div>
-                
-                <button
-                  onClick={handleConnectWallet}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors min-h-[48px] text-base"
-                >
-                  Connect Wallet to Continue
-                </button>
+                <div className="w-full">
+                  <ConnectButton
+                    client={client}
+                    chain={base}
+                    wallets={wallets}
+                    connectModal={{ size: 'compact' }}
+                    theme="light"
+                    connectButton={{
+                      label: 'Connect Wallet to Continue',
+                      className: '!w-full !bg-blue-600 !text-white hover:!bg-blue-700 !border-0 !rounded-lg !px-6 !py-3 !font-semibold !transition-colors !min-h-[48px] !text-base',
+                    }}
+                  />
+                </div>
               </div>
             ) : (
               <div className="space-y-4">

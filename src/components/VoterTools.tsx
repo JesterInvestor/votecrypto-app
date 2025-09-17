@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 import VoterToolCard from './VoterToolCard';
+import { ConnectButton } from 'thirdweb/react';
+import { client } from '@/lib/client';
+import { inAppWallet, createWallet } from 'thirdweb/wallets';
+import { base } from 'thirdweb/chains';
 
 const voterTools = [
   {
@@ -58,6 +62,36 @@ const VoterTools = () => {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [userState, setUserState] = useState<string>('');
   const [userZip, setUserZip] = useState<string>('');
+
+  const wallets = [
+    inAppWallet({
+      auth: {
+        options: [
+          'google',
+          'discord',
+          'telegram',
+          'farcaster',
+          'email',
+          'x',
+          'passkey',
+          'phone',
+          'github',
+          'twitch',
+          'tiktok',
+          'coinbase',
+          'steam',
+          'apple',
+          'facebook',
+          'guest',
+        ],
+      },
+    }),
+    createWallet('io.metamask'),
+    createWallet('com.coinbase.wallet'),
+    createWallet('me.rainbow'),
+    createWallet('io.rabby'),
+    createWallet('io.zerion.wallet'),
+  ];
 
   return (
   <section className="px-4 py-12 sm:py-16 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(to bottom, var(--brand-white), var(--brand-blue-50))' }}>
@@ -117,9 +151,19 @@ const VoterTools = () => {
             <p className="text-gray-600 mb-4 text-sm sm:text-base px-2">
               Connect your wallet to access voter tools and start earning crypto rewards for civic engagement.
             </p>
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors min-h-[48px] text-base">
-              Connect Wallet to Continue
-            </button>
+            <div className="max-w-xs mx-auto">
+              <ConnectButton
+                client={client}
+                chain={base}
+                wallets={wallets}
+                connectModal={{ size: 'compact' }}
+                theme="light"
+                connectButton={{
+                  label: 'Connect Wallet to Continue',
+                  className: '!w-full !bg-blue-600 !text-white hover:!bg-blue-700 !border-0 !rounded-lg !px-6 !py-3 !font-semibold !transition-colors !min-h-[48px] !text-base',
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import {
   inAppWallet,
   createWallet,
 } from "thirdweb/wallets";
+import { base } from "thirdweb/chains";
 
 const wallets = [
   inAppWallet({
@@ -41,6 +42,7 @@ const WalletConnection = () => {
     <div className="flex items-center">
       <ConnectButton
         client={client}
+        chain={base}
         connectModal={{ size: "compact" }}
         wallets={wallets}
         theme="light"

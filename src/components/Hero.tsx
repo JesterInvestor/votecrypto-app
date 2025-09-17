@@ -1,4 +1,14 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+
 const Hero = () => {
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    router.push('/get-started');
+  };
+
   return (
     <section className="px-4 py-20 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center">
@@ -13,7 +23,10 @@ const Hero = () => {
             Making democracy more accessible through Web3 technology.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+            <button 
+              onClick={handleGetStarted}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
               Get Started
             </button>
             <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">

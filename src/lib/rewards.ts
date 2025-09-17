@@ -6,7 +6,7 @@ export interface RewardNFT {
   name: string;
   description: string;
   image: string;
-  action: 'voter_registration' | 'absentee_ballot' | 'early_voting' | 'poll_location_check' | 'id_verification' | 'ballot_preview';
+  action: 'interested_in_voting' | 'voter_registration' | 'absentee_ballot' | 'early_voting' | 'poll_location_check' | 'id_verification' | 'ballot_preview';
   earned: boolean;
 }
 
@@ -18,6 +18,14 @@ export interface UserRewards {
 
 // Mock NFT rewards data
 export const AVAILABLE_REWARDS: RewardNFT[] = [
+  {
+    id: 'interested-voting-nft',
+    name: 'I\'m interested in voting! NFT',
+    description: 'Your first step towards civic engagement',
+    image: '🗳️',
+    action: 'interested_in_voting',
+    earned: false
+  },
   {
     id: 'vote-reg-nft',
     name: 'Voter Registration Champion',

@@ -168,7 +168,7 @@ export default function CryptoPoliticiansPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-900 mb-1">Position</label>
+              <label className="block text-xs font-medium text-gray-900 mb-1">Crypto position</label>
               <select
                 value={stance}
                 onChange={e => setStance(e.target.value)}
@@ -211,7 +211,7 @@ export default function CryptoPoliticiansPage() {
                   <th className="px-4 py-3 text-left font-semibold">Seat</th>
                   <th className="px-4 py-3 text-left font-semibold">State</th>
                   <th className="px-4 py-3 text-left font-semibold">Party</th>
-                  <th className="px-4 py-3 text-left font-semibold">Position</th>
+                  <th className="px-4 py-3 text-left font-semibold">Crypto position</th>
                   <th className="px-4 py-3 text-left font-semibold">Profile</th>
                 </tr>
               </thead>
@@ -247,7 +247,7 @@ export default function CryptoPoliticiansPage() {
           </div>
         </div>
 
-        <p className="mt-8 text-xs text-gray-400">Data shown from a curated CSV file included with the app. Filters support name, state (code or full), ZIP→state, seat, position, and party.</p>
+        <p className="mt-8 text-xs text-gray-400">Data shown from a curated CSV file included with the app. Filters support name, state (code or full), ZIP→state, seat, crypto position, and party.</p>
       </main>
     </div>
   );

@@ -7,55 +7,57 @@ const voterTools = [
   {
     id: 'register',
     title: 'Register to Vote',
-    description: 'Check your registration status and register to vote in upcoming elections.',
+    description: 'Check your registration status and register to vote in upcoming elections via Vote.org.',
     icon: '📝',
     color: 'blue',
-    features: ['Online registration', 'Status verification', 'Deadline reminders']
+    features: ['Redirects to Vote.org registration', 'State-specific forms', 'Status verification']
   },
   {
     id: 'absentee',
     title: 'Absentee Ballot',
-    description: 'Request and track your absentee ballot for convenient remote voting.',
+    description: 'Request and track your absentee ballot through Vote.org state resources.',
     icon: '📮',
     color: 'green',
-    features: ['Ballot request', 'Status tracking', 'Return verification']
+    features: ['State-specific applications', 'Direct Vote.org integration', 'Secure processing']
   },
   {
     id: 'polling',
     title: 'Find Polling Place',
-    description: 'Locate your polling station and get directions for election day.',
+    description: 'Locate your polling station using Google Civic API and Vote.org resources.',
     icon: '📍',
     color: 'purple',
-    features: ['Location finder', 'Hours & directions', 'Wait time updates']
+    features: ['Real polling locations', 'Hours & directions', 'Multiple data sources']
   },
   {
     id: 'early',
     title: 'Early Voting',
-    description: 'Find early voting locations and hours in your area.',
+    description: 'Find early voting locations and schedules via Vote.org.',
     icon: '⏰',
     color: 'orange',
-    features: ['Early vote locations', 'Schedule info', 'Eligibility check']
+    features: ['Early vote locations', 'Current schedule info', 'State requirements']
   },
   {
     id: 'id',
     title: 'Voter ID Info',
-    description: 'Learn about ID requirements and acceptable forms of identification.',
+    description: 'Learn about ID requirements and acceptable forms through Vote.org.',
     icon: '🆔',
     color: 'indigo',
-    features: ['ID requirements', 'Acceptable forms', 'How to obtain']
+    features: ['Current ID requirements', 'Acceptable forms list', 'State-specific rules']
   },
   {
     id: 'ballot',
     title: 'Sample Ballot',
-    description: 'Preview your ballot and research candidates before election day.',
+    description: 'Preview your ballot and research candidates via Vote.org resources.',
     icon: '🗳️',
     color: 'pink',
-    features: ['Ballot preview', 'Candidate info', 'Issue details']
+    features: ['Official ballot previews', 'Candidate information', 'Issue details']
   }
 ];
 
 const VoterTools = () => {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const [userState, setUserState] = useState<string>('');
+  const [userZip, setUserZip] = useState<string>('');
 
   return (
     <section className="px-4 py-16 sm:px-6 lg:px-8 bg-gray-50">
@@ -65,8 +67,32 @@ const VoterTools = () => {
             Voter Tools & Services
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Access essential voting services powered by Vote.org API. Complete actions to earn crypto rewards and NFTs.
+            Access essential voting services powered by Vote.org integration. Complete actions to earn crypto rewards and NFTs.
           </p>
+        </div>
+
+        {/* User Location Input */}
+        <div className="max-w-md mx-auto mb-8 bg-white rounded-lg p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Location (Optional)</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Provide your state and ZIP code for more accurate Vote.org redirects.
+          </p>
+          <div className="flex gap-4">
+            <input
+              type="text"
+              placeholder="State (e.g., California)"
+              value={userState}
+              onChange={(e) => setUserState(e.target.value)}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="text"
+              placeholder="ZIP Code"
+              value={userZip}
+              onChange={(e) => setUserZip(e.target.value)}
+              className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,6 +102,8 @@ const VoterTools = () => {
               tool={tool}
               isSelected={selectedTool === tool.id}
               onSelect={setSelectedTool}
+              userState={userState}
+              userZip={userZip}
             />
           ))}
         </div>

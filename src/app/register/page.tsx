@@ -59,7 +59,7 @@ const RegisterPage = () => {
 
   if (registrationSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(to bottom, var(--brand-blue-50), white)' }}>
         <div className="max-w-md mx-auto text-center p-8 bg-white rounded-lg shadow-lg">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-4xl">🎉</span>
@@ -113,7 +113,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom, var(--brand-blue-50), white)' }}>
       <main className="max-w-2xl mx-auto py-6 sm:py-12 px-4">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
           <div className="text-center mb-6 sm:mb-8">

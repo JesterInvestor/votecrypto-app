@@ -60,7 +60,7 @@ const VoterTools = () => {
   const [userZip, setUserZip] = useState<string>('');
 
   return (
-    <section className="px-4 py-12 sm:py-16 sm:px-6 lg:px-8 bg-gray-50">
+  <section className="px-4 py-12 sm:py-16 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(to bottom, var(--brand-white), var(--brand-blue-50))' }}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">

@@ -11,6 +11,7 @@ const navLinks = [
   { href: '/learn-more', label: 'Learn More' },
   { href: '/register', label: 'Register' },
   { href: '/rewards', label: 'Rewards' },
+  { href: '/elections', label: 'Elections' },
   { href: '/crypto-politicians', label: 'Crypto Politicians' },
 ];
 
@@ -21,12 +22,12 @@ export default function Navbar() {
   const isActive = (href: string) => href === '/' ? pathname === '/' : pathname?.startsWith(href);
 
   return (
-    <nav className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <nav className="border-b sticky top-0 z-50" style={{ background: 'color-mix(in oklab, var(--brand-blue) 4%, white)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Brand */}
           <div className="flex items-center">
-            <Link href="/" className="text-xl sm:text-2xl font-bold text-blue-600">VoteCrypto</Link>
+            <Link href="/" className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--brand-blue)' }}>VoteCrypto</Link>
             <span className="ml-2 text-xs sm:text-sm text-gray-500">.app</span>
           </div>
 
@@ -36,7 +37,8 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm ${isActive(link.href) ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'}`}
+                className={`text-sm ${isActive(link.href) ? 'font-semibold' : 'text-gray-700 hover:opacity-90'} underline-offset-4`}
+                style={isActive(link.href) ? { color: 'var(--brand-blue)' } : {}}
               >
                 {link.label}
               </Link>
@@ -68,7 +70,8 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`block px-2 py-2 rounded ${isActive(link.href) ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                className={`block px-2 py-2 rounded ${isActive(link.href) ? 'font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                style={isActive(link.href) ? { backgroundColor: 'color-mix(in oklab, var(--brand-blue) 12%, white)', color: 'var(--brand-blue)' } : {}}
               >
                 {link.label}
               </Link>

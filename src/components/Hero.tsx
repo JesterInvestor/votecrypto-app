@@ -18,9 +18,9 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto text-center">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-            Vote with <span className="text-blue-600">Crypto</span>,
+            Vote with <span style={{ color: 'var(--brand-blue)' }}>Crypto</span>,
             <br />
-            Earn <span className="text-purple-600">Rewards</span>
+            Earn <span style={{ color: 'var(--brand-red)' }}>Rewards</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-2">
             Connect your wallet, access voter tools, and earn NFTs and tokens for civic engagement. 
@@ -29,11 +29,12 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <button 
               onClick={handleGetStarted}
-              className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors min-h-[48px] text-base"
+              className="text-white px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold transition-colors min-h-[48px] text-base"
+              style={{ backgroundColor: 'var(--brand-blue)' }}
             >
               Get Started
             </button>
-            <button onClick={handleLearnMore} className="border border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors min-h-[48px] text-base">
+            <button onClick={handleLearnMore} className="px-6 sm:px-8 py-3 sm:py-3 rounded-lg font-semibold transition-colors min-h-[48px] text-base border" style={{ borderColor: 'var(--brand-blue)', color: 'var(--brand-blue)' }}>
               Learn More
             </button>
           </div>

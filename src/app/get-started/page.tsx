@@ -43,7 +43,7 @@ const GetStartedPage = () => {
 
   if (mintSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(to bottom, var(--brand-blue-50), white)' }}>
         <div className="max-w-md mx-auto text-center p-8 bg-white rounded-lg shadow-lg">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-4xl">🎉</span>
@@ -75,7 +75,7 @@ const GetStartedPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom, var(--brand-blue-50), white)' }}>
       <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-8">
         <div className="max-w-md mx-auto text-center">
           <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">

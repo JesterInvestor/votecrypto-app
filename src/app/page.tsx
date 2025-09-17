@@ -3,7 +3,7 @@ import Hero from '@/components/Hero';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom, var(--brand-blue-50), white)' }}>
       <main>
         <Hero />
         <VoterTools />

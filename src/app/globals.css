@@ -2,12 +2,17 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
+  --foreground: #1f2937; /* gray-800 for better readability */
+  /* Brand palette: Red, White, Blue */
+  --brand-red: #B22234;
+  --brand-white: #FFFFFF;
+  --brand-blue: #0033A0;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Derived accents */
+  --brand-blue-50: color-mix(in oklab, var(--brand-blue) 6%, white);
+  --brand-blue-100: color-mix(in oklab, var(--brand-blue) 12%, white);
+  --brand-red-50: color-mix(in oklab, var(--brand-red) 6%, white);
+  --ring: var(--brand-blue);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,8 +22,74 @@
   }
 }
 
+/* Base layout */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Headings emphasize brand colors */
+h1, h2, h3, h4, h5, h6 {
+  color: #0f172a; /* slate-900 for contrast */
+}
+
+/* Generic links */
+a {
+  color: var(--brand-blue);
+}
+a:hover {
+  opacity: .9;
+}
+
+/* Utility: force white link text when needed */
+a.link-white { color: var(--brand-white) !important; }
+
+/* Buttons (progressive enhancement when not using utility classes) */
+button.primary {
+  background-color: var(--brand-blue);
+  color: var(--brand-white);
+}
+button.primary:hover { background-color: color-mix(in oklab, var(--brand-blue) 88%, black); }
+
+button.outline {
+  color: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
+  background-color: transparent;
+}
+button.outline:hover { background-color: var(--brand-blue-50); }
+
+/* Form inputs focus ring to brand */
+input, select, textarea {
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 25%, transparent);
+  border-color: var(--ring);
+}
+
+/* Themed table headers */
+thead {
+  background: var(--brand-blue-50);
+}
+
+/* Vote.org link theming site-wide */
+a[href*="vote.org"] {
+  color: var(--brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a[href*="vote.org"]:hover {
+  text-decoration-thickness: 2px;
+  color: color-mix(in oklab, var(--brand-blue) 88%, black);
+}
+a[href*="vote.org"]::after {
+  content: " ↗";
+  font-size: .9em;
+}
+
+/* Optional patriotic divider */
+.patriotic-divider {
+  height: 3px;
+  background: linear-gradient(to right, var(--brand-red), var(--brand-white), var(--brand-blue));
 }

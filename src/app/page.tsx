@@ -1,6 +1,7 @@
 import WalletConnection from '@/components/WalletConnection';
 import VoterTools from '@/components/VoterTools';
 import Hero from '@/components/Hero';
+import VoteAmericaDemo from '@/components/VoteAmericaDemo';
 
 export default function Home() {
   return (
@@ -21,6 +22,11 @@ export default function Home() {
       <main>
         <Hero />
         <VoterTools />
+        
+        {/* VoteAmerica+ API Demo Section */}
+        <section className="px-4 py-12 sm:py-16 sm:px-6 lg:px-8">
+          <VoteAmericaDemo />
+        </section>
       </main>
 
       {/* Footer */}
@@ -48,7 +54,7 @@ export default function Home() {
                 <li>Next.js Framework</li>
                 <li>Thirdweb Web3 SDK</li>
                 <li>Vote.org API</li>
-                <li>Farcaster Integration</li>
+                <li>VoteAmerica+ Civic Data API</li>
               </ul>
             </div>
           </div>

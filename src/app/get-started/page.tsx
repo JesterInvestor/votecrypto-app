@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import { mintRewardNFT } from '@/lib/rewards';
-import { ConnectButton, useActiveAccount } from 'thirdweb/react';
+import { ConnectButton, useActiveAccount, useActiveWalletChain, useActiveWallet } from 'thirdweb/react';
 import { client } from '@/lib/client';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { base } from 'thirdweb/chains';
@@ -12,10 +12,14 @@ import { claimTo } from 'thirdweb/extensions/erc1155';
 
 const GetStartedPage = () => {
   const account = useActiveAccount();
+  const activeChain = useActiveWalletChain();
+  const wallet = useActiveWallet();
   const isWalletConnected = !!account;
+  const isOnBase = !!activeChain && activeChain.id === base.id;
   const [isMinting, setIsMinting] = useState(false);
   const [mintSuccess, setMintSuccess] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string>('');
+  const [isSwitching, setIsSwitching] = useState(false);
   const router = useRouter();
 
   const mockWalletAddress = account?.address || "0x1234567890123456789012345678901234567890"; // Use real address when connected
@@ -54,7 +58,7 @@ const GetStartedPage = () => {
   const TOKEN_ID = BigInt(0); // ERC-1155 token id 0
 
   const handleMintNFT = async () => {
-    if (!isWalletConnected || !account?.address) return;
+    if (!isWalletConnected || !account?.address || !isOnBase) return;
 
     setIsMinting(true);
     try {
@@ -65,9 +69,15 @@ const GetStartedPage = () => {
         tokenId: TOKEN_ID,
         quantity: BigInt(1),
       });
-      // tx may contain transactionHash depending on SDK version
-      // Safely handle both object or string
-      const hash = (tx as any)?.transactionHash || (typeof tx === 'string' ? tx : '');
+      // Safely derive transaction hash from possible SDK return shapes
+      // Some versions return a string hash, others return an object with transactionHash
+      let hash = '' as string;
+      if (typeof tx === 'string') {
+        hash = tx;
+      } else if (tx && typeof tx === 'object' && 'transactionHash' in tx) {
+        const maybe = (tx as { transactionHash?: string }).transactionHash;
+        if (typeof maybe === 'string') hash = maybe;
+      }
       setMintSuccess(true);
       setTransactionHash(hash);
     } catch (error) {
@@ -79,6 +89,18 @@ const GetStartedPage = () => {
 
   const handleContinueToRegistration = () => {
     router.push('/register');
+  };
+
+  const handleSwitchToBase = async () => {
+    if (!wallet) return;
+    setIsSwitching(true);
+    try {
+      await wallet.switchChain(base);
+    } catch (e) {
+      console.error('Failed to switch chain:', e);
+    } finally {
+      setIsSwitching(false);
+    }
   };
 
   if (mintSuccess) {
@@ -162,6 +184,22 @@ const GetStartedPage = () => {
               </div>
             ) : (
               <div className="space-y-4">
+                {!isOnBase && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-left">
+                    <div className="text-sm text-yellow-900">
+                      You are connected to {activeChain?.name || 'a different network'}. Please switch to Base to mint.
+                    </div>
+                    <div className="mt-2">
+                      <button
+                        onClick={handleSwitchToBase}
+                        disabled={isSwitching}
+                        className="w-full bg-yellow-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-yellow-700 transition-colors disabled:opacity-50"
+                      >
+                        {isSwitching ? 'Switching…' : 'Switch to Base'}
+                      </button>
+                    </div>
+                  </div>
+                )}
                 <div className="bg-green-50 rounded-lg p-4 mb-6">
                   <div className="flex items-center justify-center mb-2">
                     <span className="text-green-600 text-xl">✓</span>
@@ -174,7 +212,7 @@ const GetStartedPage = () => {
 
                 <button
                   onClick={handleMintNFT}
-                  disabled={isMinting}
+                  disabled={isMinting || !isOnBase}
                   className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isMinting ? (
@@ -185,6 +223,8 @@ const GetStartedPage = () => {
                       </svg>
                       Minting NFT...
                     </span>
+                  ) : !isOnBase ? (
+                    'Switch to Base to Mint'
                   ) : (
                     'Mint "I\'m interested in voting!" NFT'
                   )}

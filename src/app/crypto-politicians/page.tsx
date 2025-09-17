@@ -28,6 +28,52 @@ export default function CryptoPoliticiansPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Static option lists for dropdowns
+  const US_STATES: { code: string; name: string }[] = [
+    { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' }, { code: 'AR', name: 'Arkansas' },
+    { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' }, { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' },
+    { code: 'FL', name: 'Florida' }, { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+    { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' }, { code: 'IA', name: 'Iowa' }, { code: 'KS', name: 'Kansas' },
+    { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' }, { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' },
+    { code: 'MA', name: 'Massachusetts' }, { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+    { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' }, { code: 'NE', name: 'Nebraska' }, { code: 'NV', name: 'Nevada' },
+    { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' }, { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' },
+    { code: 'NC', name: 'North Carolina' }, { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+    { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' }, { code: 'SC', name: 'South Carolina' },
+    { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' }, { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' },
+    { code: 'VT', name: 'Vermont' }, { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+    { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }, { code: 'DC', name: 'District of Columbia' }
+  ];
+  const PARTY_OPTIONS = [
+    { value: '', label: 'All parties' },
+    { value: 'democrat', label: 'Democrat' },
+    { value: 'republican', label: 'Republican' },
+    { value: 'independent', label: 'Independent' },
+    { value: 'libertarian', label: 'Libertarian' },
+    { value: 'green', label: 'Green' },
+    { value: 'other', label: 'Other' },
+  ];
+  const ROLE_OPTIONS = [
+    { value: '', label: 'All seats' },
+    { value: 'senator', label: 'Senator' },
+    { value: 'representative', label: 'Representative' },
+    { value: 'governor', label: 'Governor' },
+    { value: 'president', label: 'President' },
+    { value: 'candidate', label: 'Candidate' },
+    { value: 'state senator', label: 'State Senator' },
+    { value: 'state representative', label: 'State Representative' },
+    { value: 'mayor', label: 'Mayor' },
+    { value: 'other', label: 'Other' },
+  ];
+  const STANCE_OPTIONS = [
+    { value: '', label: 'All positions' },
+    { value: 'strongly supportive', label: 'Really like' },
+    { value: 'somewhat supportive', label: 'Kinda like' },
+    { value: 'neutral', label: "Don't care" },
+    { value: 'somewhat against', label: 'Kinda dislike' },
+    { value: 'strongly against', label: 'Really dislike' },
+  ];
+
   async function fetchData(targetPage = page, targetPageSize = pageSize) {
     setLoading(true);
     setError(null);
@@ -94,7 +140,16 @@ export default function CryptoPoliticiansPage() {
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">State</label>
-              <input value={stateFilter} onChange={e => setStateFilter(e.target.value)} placeholder="e.g. OR or Oregon" className="w-full px-3 py-2 border rounded text-gray-900 placeholder:text-gray-700" />
+              <select
+                value={stateFilter}
+                onChange={e => setStateFilter(e.target.value)}
+                className="w-full px-3 py-2 border rounded text-gray-900"
+              >
+                <option value="">All states</option>
+                {US_STATES.map(s => (
+                  <option key={s.code} value={s.code}>{s.name} ({s.code})</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">ZIP Code</label>
@@ -102,15 +157,39 @@ export default function CryptoPoliticiansPage() {
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">Seat</label>
-              <input value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Senator" className="w-full px-3 py-2 border rounded text-gray-900 placeholder:text-gray-700" />
+              <select
+                value={role}
+                onChange={e => setRole(e.target.value)}
+                className="w-full px-3 py-2 border rounded text-gray-900"
+              >
+                {ROLE_OPTIONS.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">Position</label>
-              <input value={stance} onChange={e => setStance(e.target.value)} placeholder="e.g. Strongly Supportive" className="w-full px-3 py-2 border rounded text-gray-900 placeholder:text-gray-700" />
+              <select
+                value={stance}
+                onChange={e => setStance(e.target.value)}
+                className="w-full px-3 py-2 border rounded text-gray-900"
+              >
+                {STANCE_OPTIONS.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">Party</label>
-              <input value={party} onChange={e => setParty(e.target.value)} placeholder="e.g. Republican" className="w-full px-3 py-2 border rounded text-gray-900 placeholder:text-gray-700" />
+              <select
+                value={party}
+                onChange={e => setParty(e.target.value)}
+                className="w-full px-3 py-2 border rounded text-gray-900"
+              >
+                {PARTY_OPTIONS.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-900 mb-1">Page Size</label>

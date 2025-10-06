@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/register', label: 'Register' },
   { href: '/rewards', label: 'Rewards' },
   { href: '/elections', label: 'Elections' },
+  { href: '/election-news', label: 'Election News' },
   { href: '/crypto-politicians', label: 'Crypto Politicians' },
 ];
 

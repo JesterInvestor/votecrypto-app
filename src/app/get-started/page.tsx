@@ -7,7 +7,7 @@ import { ConnectButton, useActiveAccount, useActiveWalletChain, useActiveWallet 
 import { client } from '@/lib/client';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { base } from 'thirdweb/chains';
-import { getContract } from 'thirdweb';
+import { getContract, sendTransaction } from 'thirdweb';
 import { claimTo } from 'thirdweb/extensions/erc1155';
 
 const GetStartedPage = () => {
@@ -63,23 +63,19 @@ const GetStartedPage = () => {
     setIsMinting(true);
     try {
       const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
-      const tx = await claimTo({
+      const transaction = claimTo({
         contract,
         to: account.address,
         tokenId: TOKEN_ID,
         quantity: BigInt(1),
       });
-      // Safely derive transaction hash from possible SDK return shapes
-      // Some versions return a string hash, others return an object with transactionHash
-      let hash = '' as string;
-      if (typeof tx === 'string') {
-        hash = tx;
-      } else if (tx && typeof tx === 'object' && 'transactionHash' in tx) {
-        const maybe = (tx as { transactionHash?: string }).transactionHash;
-        if (typeof maybe === 'string') hash = maybe;
-      }
+      // Send the transaction with the user's account to trigger wallet signature and gas payment
+      const { transactionHash } = await sendTransaction({
+        transaction,
+        account,
+      });
       setMintSuccess(true);
-      setTransactionHash(hash);
+      setTransactionHash(transactionHash);
     } catch (error) {
       console.error('Minting failed:', error);
     } finally {

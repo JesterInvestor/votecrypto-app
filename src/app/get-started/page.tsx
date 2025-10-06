@@ -3,17 +3,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import { mintRewardNFT } from '@/lib/rewards';
-import { ConnectButton, useActiveAccount, useActiveWalletChain, useActiveWallet } from 'thirdweb/react';
+import { ConnectButton, useActiveAccount, useActiveWalletChain, useActiveWallet, useSendTransaction } from 'thirdweb/react';
 import { client } from '@/lib/client';
 import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { base } from 'thirdweb/chains';
-import { getContract, sendTransaction } from 'thirdweb';
-import { claimTo } from 'thirdweb/extensions/erc1155';
+import { getContract } from 'thirdweb';
+import { claimTo } from 'thirdweb/extensions/erc721';
 
 const GetStartedPage = () => {
   const account = useActiveAccount();
   const activeChain = useActiveWalletChain();
   const wallet = useActiveWallet();
+  const { mutate: sendTransaction } = useSendTransaction();
   const isWalletConnected = !!account;
   const isOnBase = !!activeChain && activeChain.id === base.id;
   const [isMinting, setIsMinting] = useState(false);
@@ -55,32 +56,28 @@ const GetStartedPage = () => {
   ];
 
   const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS || '0xb26C41D72fe12cDdfA8547C85F4Fdf486FFB9a8b') as `0x${string}`;
-  const TOKEN_ID = BigInt(0); // ERC-1155 token id 0
 
-  const handleMintNFT = async () => {
+  const handleMintNFT = () => {
     if (!isWalletConnected || !account?.address || !isOnBase) return;
 
     setIsMinting(true);
-    try {
-      const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
-      const transaction = claimTo({
-        contract,
-        to: account.address,
-        tokenId: TOKEN_ID,
-        quantity: BigInt(1),
-      });
-      // Send the transaction with the user's account to trigger wallet signature and gas payment
-      const { transactionHash } = await sendTransaction({
-        transaction,
-        account,
-      });
-      setMintSuccess(true);
-      setTransactionHash(transactionHash);
-    } catch (error) {
-      console.error('Minting failed:', error);
-    } finally {
-      setIsMinting(false);
-    }
+    const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
+    const transaction = claimTo({
+      contract,
+      to: account.address,
+      quantity: BigInt(1),
+    });
+    sendTransaction(transaction, {
+      onSuccess: (result) => {
+        setMintSuccess(true);
+        setTransactionHash(result.transactionHash);
+        setIsMinting(false);
+      },
+      onError: (error) => {
+        console.error('Minting failed:', error);
+        setIsMinting(false);
+      },
+    });
   };
 
   const handleContinueToRegistration = () => {

@@ -6,7 +6,7 @@ import { registerToVote, type VoterRegistrationData } from '@/lib/api/voteOrg';
 import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react';
 import { client } from '@/lib/client';
 import { base } from 'thirdweb/chains';
-import { getContract } from 'thirdweb';
+import { getContract, sendTransaction } from 'thirdweb';
 import { claimTo } from 'thirdweb/extensions/erc1155';
 
 const RegisterPage = () => {
@@ -58,21 +58,18 @@ const RegisterPage = () => {
           setIsMintingNFT(true);
           try {
             const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
-            const tx = await claimTo({
+            const transaction = claimTo({
               contract,
               to: account.address,
               tokenId: REGISTRATION_TOKEN_ID,
               quantity: BigInt(1),
             });
-            // Extract transaction hash
-            let hash = '' as string;
-            if (typeof tx === 'string') {
-              hash = tx;
-            } else if (tx && typeof tx === 'object' && 'transactionHash' in tx) {
-              const maybe = (tx as { transactionHash?: string }).transactionHash;
-              if (typeof maybe === 'string') hash = maybe;
-            }
-            setTransactionHash(hash);
+            // Send the transaction with the user's account to trigger wallet signature and gas payment
+            const { transactionHash } = await sendTransaction({
+              transaction,
+              account,
+            });
+            setTransactionHash(transactionHash);
             setEarnedRewards(true);
           } catch (rewardError) {
             console.error('Failed to mint reward NFT:', rewardError);

@@ -3,9 +3,17 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { registerToVote, type VoterRegistrationData } from '@/lib/api/voteOrg';
-import { mintRewardNFT } from '@/lib/rewards';
+import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react';
+import { client } from '@/lib/client';
+import { base } from 'thirdweb/chains';
+import { getContract } from 'thirdweb';
+import { claimTo } from 'thirdweb/extensions/erc1155';
 
 const RegisterPage = () => {
+  const account = useActiveAccount();
+  const activeChain = useActiveWalletChain();
+  const isWalletConnected = !!account;
+  const isOnBase = !!activeChain && activeChain.id === base.id;
   const [formData, setFormData] = useState<VoterRegistrationData>({
     address: '',
     city: '',
@@ -18,9 +26,12 @@ const RegisterPage = () => {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [confirmationId, setConfirmationId] = useState('');
   const [earnedRewards, setEarnedRewards] = useState(false);
+  const [isMintingNFT, setIsMintingNFT] = useState(false);
+  const [transactionHash, setTransactionHash] = useState<string>('');
   const router = useRouter();
 
-  const mockWalletAddress = "0x1234567890123456789012345678901234567890";
+  const CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS || '0xb26C41D72fe12cDdfA8547C85F4Fdf486FFB9a8b') as `0x${string}`;
+  const REGISTRATION_TOKEN_ID = BigInt(1); // ERC-1155 token id 1 for registration NFT
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -42,12 +53,32 @@ const RegisterPage = () => {
         setRegistrationSuccess(true);
         setConfirmationId(result.message || '');
 
-        // Award the voter registration NFT
-        try {
-          await mintRewardNFT(mockWalletAddress, 'voter_registration');
-          setEarnedRewards(true);
-        } catch (rewardError) {
-          console.error('Failed to mint reward NFT:', rewardError);
+        // Award the voter registration NFT - only if wallet is connected and on Base
+        if (isWalletConnected && account?.address && isOnBase) {
+          setIsMintingNFT(true);
+          try {
+            const contract = getContract({ client, chain: base, address: CONTRACT_ADDRESS });
+            const tx = await claimTo({
+              contract,
+              to: account.address,
+              tokenId: REGISTRATION_TOKEN_ID,
+              quantity: BigInt(1),
+            });
+            // Extract transaction hash
+            let hash = '' as string;
+            if (typeof tx === 'string') {
+              hash = tx;
+            } else if (tx && typeof tx === 'object' && 'transactionHash' in tx) {
+              const maybe = (tx as { transactionHash?: string }).transactionHash;
+              if (typeof maybe === 'string') hash = maybe;
+            }
+            setTransactionHash(hash);
+            setEarnedRewards(true);
+          } catch (rewardError) {
+            console.error('Failed to mint reward NFT:', rewardError);
+          } finally {
+            setIsMintingNFT(false);
+          }
         }
       }
     } catch (error) {
@@ -86,9 +117,26 @@ const RegisterPage = () => {
               <h3 className="font-semibold text-gray-900 mb-2">
                 Bonus: Voter Registration Champion NFT
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 mb-2">
                 You&apos;ve earned another NFT for successfully registering to vote!
               </p>
+              {transactionHash && (
+                <p className="text-xs text-gray-500 break-all">
+                  Transaction: <a className="text-blue-600 underline" href={`https://basescan.org/tx/${transactionHash}`} target="_blank" rel="noreferrer">{transactionHash.substring(0, 20)}...</a>
+                </p>
+              )}
+            </div>
+          )}
+
+          {isMintingNFT && (
+            <div className="bg-yellow-50 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-center">
+                <svg className="animate-spin h-5 w-5 text-yellow-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span className="text-yellow-800">Minting your NFT...</span>
+              </div>
             </div>
           )}
 
